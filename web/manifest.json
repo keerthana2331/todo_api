@@ -1,6 +1,6 @@
 {
-    "name": "todo_application",
-    "short_name": "todo_application",
+    "name": "todo1_api",
+    "short_name": "todo1_api",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
