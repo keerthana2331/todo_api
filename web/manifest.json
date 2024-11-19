@@ -1,6 +1,6 @@
 {
-    "name": "todoui_flutter",
-    "short_name": "todoui_flutter",
+    "name": "todo_application",
+    "short_name": "todo_application",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
