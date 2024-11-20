@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, avoid_print, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:todo_app_provider/todo_apiservice.dart';
 
@@ -21,7 +23,7 @@ class _TodoListState extends State<TodoList> {
     setState(() {
       isLoading = true;
     });
-    
+
     try {
       final fetchedTasks = await apiService.fetchTasks();
       setState(() {
@@ -31,7 +33,7 @@ class _TodoListState extends State<TodoList> {
     } catch (e) {
       print('Error fetching tasks: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load tasks')),
+        const SnackBar(content: Text('Failed to load tasks')),
       );
       setState(() {
         isLoading = false;
@@ -48,20 +50,17 @@ class _TodoListState extends State<TodoList> {
     } catch (e) {
       print('Error adding task: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to add task')),
+        const SnackBar(content: Text('Failed to add task')),
       );
     }
   }
 
   Future<void> _editTask(String id, String title, bool completed) async {
-    // Find the task index
     final taskIndex = tasks.indexWhere((task) => task['_id'] == id);
     if (taskIndex == -1) return;
 
-    // Store the old task data in case we need to revert
     final oldTask = Map<String, dynamic>.from(tasks[taskIndex]);
 
-    // Update locally first
     setState(() {
       tasks[taskIndex] = {
         ...tasks[taskIndex],
@@ -71,19 +70,17 @@ class _TodoListState extends State<TodoList> {
     });
 
     try {
-      // Then update on the server
       final updatedTask = await apiService.updateTask(id, title, completed);
       setState(() {
         tasks[taskIndex] = updatedTask;
       });
     } catch (e) {
       print('Error editing task: $e');
-      // Revert to old state if the update failed
       setState(() {
         tasks[taskIndex] = oldTask;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update task')),
+        const SnackBar(content: Text('Failed to update task')),
       );
     }
   }
@@ -93,11 +90,9 @@ class _TodoListState extends State<TodoList> {
   }
 
   Future<void> _deleteTask(String id) async {
-    // Find the task index
     final taskIndex = tasks.indexWhere((task) => task['_id'] == id);
     if (taskIndex == -1) return;
 
-    // Remove locally first
     final deletedTask = tasks[taskIndex];
     setState(() {
       tasks.removeAt(taskIndex);
@@ -107,12 +102,11 @@ class _TodoListState extends State<TodoList> {
       await apiService.hardDeleteTask(id);
     } catch (e) {
       print('Error deleting task: $e');
-      // Restore the task if deletion failed
       setState(() {
         tasks.insert(taskIndex, deletedTask);
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete task')),
+        const SnackBar(content: Text('Failed to delete task')),
       );
     }
   }
@@ -124,18 +118,18 @@ class _TodoListState extends State<TodoList> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Add Task'),
+          title: const Text('Add Task'),
           content: TextField(
             controller: controller,
-            decoration: InputDecoration(labelText: 'Task Title'),
+            decoration: const InputDecoration(labelText: 'Task Title'),
             autofocus: true,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 final title = controller.text.trim();
                 if (title.isNotEmpty) {
@@ -143,7 +137,7 @@ class _TodoListState extends State<TodoList> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
           ],
         );
@@ -158,18 +152,18 @@ class _TodoListState extends State<TodoList> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit Task'),
+          title: const Text('Edit Task'),
           content: TextField(
             controller: controller,
-            decoration: InputDecoration(labelText: 'Task Title'),
+            decoration: const InputDecoration(labelText: 'Task Title'),
             autofocus: true,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 final newTitle = controller.text.trim();
                 if (newTitle.isNotEmpty) {
@@ -177,7 +171,7 @@ class _TodoListState extends State<TodoList> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -189,62 +183,87 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Todo List'),
+        title: const Text('Todo List'),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: _loadTasks,
           ),
         ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : tasks.isEmpty
-              ? Center(child: Text('No tasks available'))
+              ? const Center(
+                  child: Text(
+                    'No tasks available',
+                    style: TextStyle(fontSize: 18, color: Colors.white70),
+                  ),
+                )
               : ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
                     final task = tasks[index];
-                    return ListTile(
-                      title: Text(
-                        task['title'],
-                        style: TextStyle(
-                          decoration: task['completed'] ? TextDecoration.lineThrough : null,
+                    return Card(
+                      color: const Color(0xFF1E1E2C),
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 16,
                         ),
-                      ),
-                      leading: Checkbox(
-                        value: task['completed'],
-                        onChanged: (bool? value) {
-                          if (value != null) {
-                            _toggleTaskCompletion(task['_id'], task['title'], task['completed']);
-                          }
-                        },
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () {
-                              _showEditTaskDialog(
+                        title: Text(
+                          task['title'],
+                          style: TextStyle(
+                            fontSize: 18,
+                            decoration:
+                                task['completed'] ? TextDecoration.lineThrough : null,
+                            color: Colors.white,
+                          ),
+                        ),
+                        leading: Checkbox(
+                          value: task['completed'],
+                          onChanged: (bool? value) {
+                            if (value != null) {
+                              _toggleTaskCompletion(
                                 task['_id'],
                                 task['title'],
                                 task['completed'],
                               );
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _deleteTask(task['_id']),
-                          ),
-                        ],
+                            }
+                          },
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit, color: Colors.deepPurpleAccent),
+                              onPressed: () {
+                                _showEditTaskDialog(
+                                  task['_id'],
+                                  task['title'],
+                                  task['completed'],
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.greenAccent),
+                              onPressed: () => _deleteTask(task['_id']),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
                 ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddTaskDialog,
-        child: Icon(Icons.add),
+        backgroundColor: Colors.tealAccent,
+        child: const Icon(Icons.add, color: Colors.black),
       ),
     );
   }

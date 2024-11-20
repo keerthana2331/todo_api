@@ -31,38 +31,63 @@ class MyApp extends StatelessWidget {
           titleTextStyle: TextStyle(
             color: Colors.tealAccent,
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 22,
+            letterSpacing: 1.2,
           ),
+          iconTheme: IconThemeData(color: Colors.tealAccent),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.teal,
-          elevation: 4,
+          elevation: 6,
         ),
         cardTheme: CardTheme(
-          color: const Color(0xFF292929),
+          color: const Color(0xFF1E1E1E),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(15),
           ),
-          elevation: 4,
+          elevation: 5,
+          shadowColor: Colors.black87,
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: const Color(0xFF2C2C2C),
+          fillColor: const Color(0xFF292929),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12),
+            borderSide:  const BorderSide(color: Colors.tealAccent, width: 1.2),
           ),
-          hintStyle: const TextStyle(color: Colors.white38),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide:  const BorderSide(color: Colors.tealAccent, width: 1.5),
+          ),
+          hintStyle: const TextStyle(color: Colors.white38, fontStyle: FontStyle.italic),
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.tealAccent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.tealAccent,
+            foregroundColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
         ),
         textTheme: const TextTheme(
           bodyMedium: TextStyle(color: Colors.white70, fontSize: 16),
-          titleLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          titleLarge: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          labelLarge: TextStyle(
+            color: Colors.tealAccent,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       initialRoute: '/',

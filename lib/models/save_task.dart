@@ -47,4 +47,6 @@ class SaveTask extends ChangeNotifier {
   int getTaskIndex(String title) {
     return tasks.indexWhere((task) => task.title == title);
   }
+
+  void toggleTaskStatus(Task task) {}
 }

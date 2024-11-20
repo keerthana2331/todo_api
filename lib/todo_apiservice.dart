@@ -1,8 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String baseUrl = "https://crudcrud.com/api/b5010763945c4e8c9780632ac62f3412";
+  final String baseUrl = "https://crudcrud.com/api/161287f82ccc421598ee96c72720831f";
 
   Future<List<Map<String, dynamic>>> fetchTasks() async {
     final response = await http.get(Uri.parse('$baseUrl/tasks'));
