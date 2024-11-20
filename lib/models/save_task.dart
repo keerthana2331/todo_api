@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_provider/models/task_model.dart';
 
 class SaveTask extends ChangeNotifier {
-  final List<Task> _tasks = [
-    Task(title: 'State Management', isCompleted: true),
-    Task(title: 'Provider', isCompleted: false),
-    Task(title: 'Change notifier', isCompleted: true),
-    Task(title: 'Consumer', isCompleted: false),
-    Task(title: 'Selector', isCompleted: true)
+   final List<Task> _tasks = [
+    // Task(title: 'State Management', isCompleted: true),
+    // Task(title: 'Provider', isCompleted: false),
+    // Task(title: 'Change notifier', isCompleted: true),
+    // Task(title: 'Consumer', isCompleted: false),
+    // Task(title: 'Selector', isCompleted: true)
   ];
 
   List<Task> get tasks => _tasks;
