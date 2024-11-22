@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app_provider/models/save_task.dart';
+import 'package:todo_app_provider/models/todo_provider.dart';
 import 'package:todo_app_provider/pages/add_todo.dart';
 import 'package:todo_app_provider/pages/todo_list.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => SaveTask(),
+      create: (context) => TodoProvider(),
       child: const MyApp(),
     ),
   );

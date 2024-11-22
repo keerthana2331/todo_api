@@ -1,41 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app_provider/models/save_task.dart';
+import 'package:todo_app_provider/models/todo_provider.dart';
+
 import 'package:todo_app_provider/models/task_model.dart';
 
-class AddTodo extends StatefulWidget {
+class AddTodo extends StatelessWidget {
   final Task? taskToEdit;
-  final int? editIndex;
 
-  const AddTodo({
-    super.key,
-    this.taskToEdit,
-    this.editIndex,
-  });
+  const AddTodo({Key? key, this.taskToEdit}) : super(key: key);
 
-  @override
-  State<AddTodo> createState() => _AddTodoState();
-}
-
-class _AddTodoState extends State<AddTodo> {
-  late final TextEditingController controller;
-  bool isCompleted = false;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TextEditingController(text: widget.taskToEdit?.title ?? '');
-    isCompleted = widget.taskToEdit?.isCompleted ?? false;
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  void saveTask(BuildContext context) {
-    if (controller.text.trim().isEmpty) {
+  void saveTask(BuildContext context, String title, bool isCompleted) {
+    if (title.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter a title'),
@@ -45,35 +20,36 @@ class _AddTodoState extends State<AddTodo> {
       return;
     }
 
-    final taskProvider = context.read<SaveTask>();
+    final todoProvider = context.read<TodoProvider>();
 
-    if (widget.taskToEdit != null && widget.editIndex != null) {
-      taskProvider.editTask(
-        widget.editIndex!,
-        Task(
-          title: controller.text.trim(),
-          isCompleted: isCompleted,
-        ),
+    if (taskToEdit != null) {
+      // Update the existing task
+      todoProvider.editTask(
+        taskToEdit!.id!,
+        title.trim(),
+        isCompleted,
       );
     } else {
-      taskProvider.addTask(
-        Task(
-          title: controller.text.trim(),
-          isCompleted: isCompleted,
-        ),
+      // Add a new task
+      todoProvider.addTask(
+        title.trim(),
       );
     }
 
-    controller.clear();
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController controller = TextEditingController(
+      text: taskToEdit?.title ?? '',
+    );
+    bool isCompleted = taskToEdit?.isCompleted ?? false;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.taskToEdit != null ? 'Edit Todo' : 'Add Todo',
+          taskToEdit != null ? 'Edit Todo' : 'Add Todo',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -85,12 +61,12 @@ class _AddTodoState extends State<AddTodo> {
           children: [
             TextField(
               controller: controller,
-              autofocus: widget.taskToEdit == null,
+              autofocus: taskToEdit == null,
               decoration: InputDecoration(
                 hintText: 'Title',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide:const BorderSide(color: Colors.tealAccent, width: 2),
+                  borderSide: const BorderSide(color: Colors.tealAccent, width: 2),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -103,32 +79,36 @@ class _AddTodoState extends State<AddTodo> {
               ),
             ),
             const SizedBox(height: 20),
-            CheckboxListTile(
-              title: const Text('Mark as completed'),
-              activeColor: Colors.tealAccent,
-              value: isCompleted,
-              onChanged: (value) {
-                setState(() {
-                  isCompleted = value ?? false;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+            StatefulBuilder(
+              builder: (context, setState) => CheckboxListTile(
+                title: const Text('Mark as completed'),
+                activeColor: Colors.tealAccent,
+                value: isCompleted,
+                onChanged: (value) {
+                  setState(() {
+                    isCompleted = value ?? false;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => saveTask(context),
+              onPressed: () => saveTask(
+                context,
+                controller.text,
+                isCompleted,
+              ),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                iconColor: Colors.teal,
-                disabledIconColor: Colors.white,
                 elevation: 5,
               ),
               child: Text(
-                widget.taskToEdit != null ? 'Update Task' : 'Add Task',
+                taskToEdit != null ? 'Update Task' : 'Add Task',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

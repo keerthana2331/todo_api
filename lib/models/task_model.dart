@@ -28,6 +28,8 @@ class Task {
     );
   }
 
+  get id => null;
+
   Map<String, dynamic> toMap() {
     return {
       'title': title,
