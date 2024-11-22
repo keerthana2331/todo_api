@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_provider/models/todo_provider.dart';
@@ -23,14 +25,14 @@ class AddTodo extends StatelessWidget {
     final todoProvider = context.read<TodoProvider>();
 
     if (taskToEdit != null) {
-      // Update the existing task
+
       todoProvider.editTask(
         taskToEdit!.id!,
         title.trim(),
         isCompleted,
       );
     } else {
-      // Add a new task
+
       todoProvider.addTask(
         title.trim(),
       );

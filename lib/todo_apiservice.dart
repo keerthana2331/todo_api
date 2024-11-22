@@ -44,7 +44,7 @@ class ApiService {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // If the API doesn't return the updated object, create it manually
+  
         return {
           "_id": id,
           "title": title,

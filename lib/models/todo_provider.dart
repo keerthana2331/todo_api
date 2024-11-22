@@ -2,31 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_provider/todo_apiservice.dart';
 
 class TodoProvider with ChangeNotifier {
-  final ApiService _apiService = ApiService();
-  List<Map<String, dynamic>> _tasks = [];
-  bool _isLoading = false;
+  final ApiService apiService = ApiService();
+  List<Map<String, dynamic>> tasks = [];
+  bool isLoading = false;
 
-  List<Map<String, dynamic>> get tasks => _tasks;
-  bool get isLoading => _isLoading;
+  List<Map<String, dynamic>> get tasksss => tasks;
+  bool get isLoadings => isLoading;
 
   Future<void> loadTasks() async {
-    _isLoading = true;
+    isLoading = true;
     notifyListeners();
 
     try {
-      _tasks = await _apiService.fetchTasks();
+      tasks = await apiService.fetchTasks();
     } catch (e) {
       debugPrint('Error fetching tasks: $e');
     } finally {
-      _isLoading = false;
+      isLoading = false;
       notifyListeners();
     }
   }
 
   Future<void> addTask(String title) async {
     try {
-      final newTask = await _apiService.createTask(title, false);
-      _tasks.add(newTask);
+      final newTask = await apiService.createTask(title, false);
+      tasks.add(newTask);
       notifyListeners();
     } catch (e) {
       debugPrint('Error adding task: $e');
@@ -34,45 +34,45 @@ class TodoProvider with ChangeNotifier {
   }
 
   Future<void> editTask(String id, String title, bool completed) async {
-    final index = _tasks.indexWhere((task) => task['_id'] == id);
+    final index = tasks.indexWhere((task) => task['_id'] == id);
     if (index == -1) return;
 
-    final oldTask = Map<String, dynamic>.from(_tasks[index]);
-    _tasks[index] = {...oldTask, 'title': title, 'completed': completed};
+    final oldTask = Map<String, dynamic>.from(tasks[index]);
+    tasks[index] = {...oldTask, 'title': title, 'completed': completed};
     notifyListeners();
 
     try {
-      final updatedTask = await _apiService.updateTask(id, title, completed);
-      _tasks[index] = updatedTask;
+      final updatedTask = await apiService.updateTask(id, title, completed);
+      tasks[index] = updatedTask;
     } catch (e) {
-      _tasks[index] = oldTask;
+      tasks[index] = oldTask;
       debugPrint('Error editing task: $e');
     }
     notifyListeners();
   }
 
   Future<void> deleteTask(String id) async {
-    final index = _tasks.indexWhere((task) => task['_id'] == id);
+    final index = tasks.indexWhere((task) => task['_id'] == id);
     if (index == -1) return;
 
-    final deletedTask = _tasks[index];
-    _tasks.removeAt(index);
+    final deletedTask = tasks[index];
+    tasks.removeAt(index);
     notifyListeners();
 
     try {
-      await _apiService.hardDeleteTask(id);
+      await apiService.hardDeleteTask(id);
     } catch (e) {
-      _tasks.insert(index, deletedTask);
+      tasks.insert(index, deletedTask);
       debugPrint('Error deleting task: $e');
     }
     notifyListeners();
   }
 
   Future<void> toggleTaskCompletion(String id) async {
-    final index = _tasks.indexWhere((task) => task['_id'] == id);
+    final index = tasks.indexWhere((task) => task['id'] == id);
     if (index == -1) return;
 
-    final task = _tasks[index];
+    final task = tasks[index];
     await editTask(id, task['title'], !task['completed']);
   }
 }

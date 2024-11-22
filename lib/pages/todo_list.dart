@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_provider/models/todo_provider.dart';
@@ -5,7 +7,7 @@ import 'package:todo_app_provider/models/todo_provider.dart';
 class TodoList extends StatelessWidget {
   const TodoList({Key? key}) : super(key: key);
 
-  void _showAddTaskDialog(BuildContext context) {
+  void showAddTaskDialog(BuildContext context) {
     final TextEditingController controller = TextEditingController();
     showDialog(
       context: context,
@@ -38,7 +40,7 @@ class TodoList extends StatelessWidget {
     );
   }
 
-  void _showEditTaskDialog(BuildContext context, String id, String currentTitle, bool completed) {
+  void showEditTaskDialog(BuildContext context, String id, String currentTitle, bool completed) {
     final TextEditingController controller = TextEditingController(text: currentTitle);
     showDialog(
       context: context,
@@ -115,7 +117,7 @@ class TodoList extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: () => _showEditTaskDialog(
+                        onPressed: () => showEditTaskDialog(
                           context,
                           task['_id'],
                           task['title'],
@@ -135,7 +137,7 @@ class TodoList extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddTaskDialog(context),
+        onPressed: () => showAddTaskDialog(context),
         child: const Icon(Icons.add),
       ),
     );
