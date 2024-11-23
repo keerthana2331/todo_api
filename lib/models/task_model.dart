@@ -4,7 +4,7 @@ class Task {
 
   Task({
     required this.title,
-    required this.isCompleted,
+    required this.isCompleted, required id,
   });
 
   void isDone() {
@@ -17,14 +17,14 @@ class Task {
   }) {
     return Task(
       title: title ?? this.title,
-      isCompleted: isCompleted ?? this.isCompleted,
+      isCompleted: isCompleted ?? this.isCompleted, id: null,
     );
   }
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
       title: map['title'] ?? '',
-      isCompleted: map['isCompleted'] ?? false,
+      isCompleted: map['isCompleted'] ?? false, id: null,
     );
   }
 

@@ -1,5 +1,3 @@
-// ignore_for_file: use_super_parameters
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_provider/models/todo_provider.dart';
@@ -7,6 +5,7 @@ import 'package:todo_app_provider/models/todo_provider.dart';
 class TodoList extends StatelessWidget {
   const TodoList({Key? key}) : super(key: key);
 
+  // Add task dialog
   void showAddTaskDialog(BuildContext context) {
     final TextEditingController controller = TextEditingController();
     showDialog(
@@ -40,6 +39,7 @@ class TodoList extends StatelessWidget {
     );
   }
 
+  // Edit task dialog
   void showEditTaskDialog(BuildContext context, String id, String currentTitle, bool completed) {
     final TextEditingController controller = TextEditingController(text: currentTitle);
     showDialog(
@@ -109,8 +109,10 @@ class TodoList extends StatelessWidget {
                   ),
                   leading: Checkbox(
                     value: task['completed'],
-                    onChanged: (value) =>
-                        todoProvider.toggleTaskCompletion(task['_id']),
+                    onChanged: (bool? value) {
+                      // This will trigger the completion toggle
+                      context.read<TodoProvider>().toggleTaskCompletion(task['_id'], value ?? false);
+                    },
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -126,7 +128,7 @@ class TodoList extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () => todoProvider.deleteTask(task['_id']),
+                        onPressed: () => context.read<TodoProvider>().deleteTask(task['_id']),
                       ),
                     ],
                   ),

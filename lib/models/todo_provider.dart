@@ -67,12 +67,12 @@ class TodoProvider with ChangeNotifier {
     }
     notifyListeners();
   }
-
-  Future<void> toggleTaskCompletion(String id) async {
-    final index = tasks.indexWhere((task) => task['id'] == id);
-    if (index == -1) return;
-
-    final task = tasks[index];
-    await editTask(id, task['title'], !task['completed']);
+ // Toggle task completion status
+  void toggleTaskCompletion(String taskId, bool isCompleted) {
+    final taskIndex = tasks.indexWhere((task) => task['_id'] == taskId);
+    if (taskIndex != -1) {
+      tasks[taskIndex]['completed'] = isCompleted;
+      notifyListeners(); // Notify listeners to rebuild the UI
+    }
   }
 }

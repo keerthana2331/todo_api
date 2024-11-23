@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String baseUrl = "https://crudcrud.com/api/0976b7208d7245bf97a101a69752c9b9";
+  final String baseUrl = "https://crudcrud.com/api/982578084cd2499e85afc3aa3b3878e3";
 
   Future<List<Map<String, dynamic>>> fetchTasks() async {
     final response = await http.get(Uri.parse('$baseUrl/tasks'));
