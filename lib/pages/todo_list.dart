@@ -5,7 +5,6 @@ import 'package:todo_app_provider/models/todo_provider.dart';
 class TodoList extends StatelessWidget {
   const TodoList({Key? key}) : super(key: key);
 
-  // Add task dialog
   void showAddTaskDialog(BuildContext context) {
     final TextEditingController controller = TextEditingController();
     showDialog(
@@ -39,9 +38,10 @@ class TodoList extends StatelessWidget {
     );
   }
 
-  // Edit task dialog
-  void showEditTaskDialog(BuildContext context, String id, String currentTitle, bool completed) {
-    final TextEditingController controller = TextEditingController(text: currentTitle);
+  void showEditTaskDialog(
+      BuildContext context, String id, String currentTitle, bool completed) {
+    final TextEditingController controller =
+        TextEditingController(text: currentTitle);
     showDialog(
       context: context,
       builder: (context) {
@@ -61,7 +61,9 @@ class TodoList extends StatelessWidget {
               onPressed: () {
                 final newTitle = controller.text.trim();
                 if (newTitle.isNotEmpty) {
-                  context.read<TodoProvider>().editTask(id, newTitle, completed);
+                  context
+                      .read<TodoProvider>()
+                      .editTask(id, newTitle, completed);
                   Navigator.pop(context);
                 }
               },
@@ -102,16 +104,16 @@ class TodoList extends StatelessWidget {
                   title: Text(
                     task['title'],
                     style: TextStyle(
-                      decoration: task['completed']
-                          ? TextDecoration.lineThrough
-                          : null,
+                      decoration:
+                          task['completed'] ? TextDecoration.lineThrough : null,
                     ),
                   ),
                   leading: Checkbox(
                     value: task['completed'],
                     onChanged: (bool? value) {
-                      // This will trigger the completion toggle
-                      context.read<TodoProvider>().toggleTaskCompletion(task['_id'], value ?? false);
+                      context
+                          .read<TodoProvider>()
+                          .toggleTaskCompletion(task['_id'], value ?? false);
                     },
                   ),
                   trailing: Row(
@@ -128,7 +130,9 @@ class TodoList extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () => context.read<TodoProvider>().deleteTask(task['_id']),
+                        onPressed: () => context
+                            .read<TodoProvider>()
+                            .deleteTask(task['_id']),
                       ),
                     ],
                   ),

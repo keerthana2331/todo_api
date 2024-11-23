@@ -25,14 +25,12 @@ class AddTodo extends StatelessWidget {
     final todoProvider = context.read<TodoProvider>();
 
     if (taskToEdit != null) {
-
       todoProvider.editTask(
         taskToEdit!.id!,
         title.trim(),
         isCompleted,
       );
     } else {
-
       todoProvider.addTask(
         title.trim(),
       );
@@ -68,7 +66,8 @@ class AddTodo extends StatelessWidget {
                 hintText: 'Title',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.tealAccent, width: 2),
+                  borderSide:
+                      const BorderSide(color: Colors.tealAccent, width: 2),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),

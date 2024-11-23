@@ -55,13 +55,14 @@ class MyApp extends StatelessWidget {
           fillColor: const Color(0xFF292929),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide:  const BorderSide(color: Colors.tealAccent, width: 1.2),
+            borderSide: const BorderSide(color: Colors.tealAccent, width: 1.2),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide:  const BorderSide(color: Colors.tealAccent, width: 1.5),
+            borderSide: const BorderSide(color: Colors.tealAccent, width: 1.5),
           ),
-          hintStyle: const TextStyle(color: Colors.white38, fontStyle: FontStyle.italic),
+          hintStyle: const TextStyle(
+              color: Colors.white38, fontStyle: FontStyle.italic),
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.tealAccent,

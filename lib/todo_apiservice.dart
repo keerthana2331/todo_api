@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String baseUrl = "https://crudcrud.com/api/982578084cd2499e85afc3aa3b3878e3";
+  final String baseUrl =
+      "https://crudcrud.com/api/982578084cd2499e85afc3aa3b3878e3";
 
   Future<List<Map<String, dynamic>>> fetchTasks() async {
     final response = await http.get(Uri.parse('$baseUrl/tasks'));
@@ -24,7 +25,7 @@ class ApiService {
         "completed": completed,
       }),
     );
-    
+
     if (response.statusCode == 201) {
       return json.decode(response.body);
     } else {
@@ -32,7 +33,8 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTask(String id, String title, bool completed) async {
+  Future<Map<String, dynamic>> updateTask(
+      String id, String title, bool completed) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/tasks/$id'),
@@ -44,7 +46,6 @@ class ApiService {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-  
         return {
           "_id": id,
           "title": title,
