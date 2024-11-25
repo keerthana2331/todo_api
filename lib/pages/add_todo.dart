@@ -8,6 +8,7 @@ class AddTodo extends StatelessWidget {
 
   const AddTodo({Key? key, this.taskToEdit}) : super(key: key);
 
+ 
   void saveTask(BuildContext context, String title, bool isCompleted) {
     if (title.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -19,7 +20,7 @@ class AddTodo extends StatelessWidget {
       return;
     }
 
-    final todoProvider = context.read<TodoProvider>();
+    final todoProvider = Provider.of<TodoProvider>(context, listen: false);
 
     if (taskToEdit != null) {
       todoProvider.editTask(
@@ -77,19 +78,15 @@ class AddTodo extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            StatefulBuilder(
-              builder: (context, setState) => CheckboxListTile(
-                title: const Text('Mark as completed'),
-                activeColor: Colors.tealAccent,
-                value: isCompleted,
-                onChanged: (value) {
-                  setState(() {
-                    isCompleted = value ?? false;
-                  });
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-              ),
+            CheckboxListTile(
+              title: const Text('Mark as completed'),
+              activeColor: Colors.tealAccent,
+              value: isCompleted,
+              onChanged: (value) {
+                isCompleted = value ?? false;
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 0),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

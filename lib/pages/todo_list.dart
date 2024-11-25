@@ -87,33 +87,33 @@ class TodoList extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<TodoProvider>(
-        builder: (context, todoProvider, child) {
-          if (todoProvider.isLoading) {
+      body: Selector<TodoProvider, List<Map<String, dynamic>>>(
+        selector: (context, todoProvider) => todoProvider.tasks,
+        builder: (context, tasks, child) {
+          if (context.watch<TodoProvider>().isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (todoProvider.tasks.isEmpty) {
+          if (tasks.isEmpty) {
             return const Center(child: Text('No tasks available'));
           }
           return ListView.builder(
-            itemCount: todoProvider.tasks.length,
+            itemCount: tasks.length,
             itemBuilder: (context, index) {
-              final task = todoProvider.tasks[index];
+              final task = tasks[index];
               return Card(
                 child: ListTile(
-                  title: Text(
-                    task['title'],
-                    style: TextStyle(
-                      decoration:
-                          task['completed'] ? TextDecoration.lineThrough : null,
-                    ),
-                  ),
-                  leading: Checkbox(
-                    value: task['completed'],
-                    onChanged: (bool? value) {
-                      context
-                          .read<TodoProvider>()
-                          .toggleTaskCompletion(task['_id'], value ?? false);
+                  title: Selector<TodoProvider, String>(
+                    selector: (context, todoProvider) =>
+                        todoProvider.tasks[index]['title'],
+                    builder: (context, title, child) {
+                      return Text(
+                        title,
+                        style: TextStyle(
+                          decoration: task['completed']
+                              ? TextDecoration.lineThrough
+                              : null,
+                        ),
+                      );
                     },
                   ),
                   trailing: Row(
