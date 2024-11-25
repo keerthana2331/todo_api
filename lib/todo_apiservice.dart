@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   final String baseUrl =
-      "https://crudcrud.com/api/dd5abdc9aa4b40318c6602497173b276";
+      "https://crudcrud.com/api/3cb1cb908e904453bffbfb9ef758aeea";
 
   Future<List<Map<String, dynamic>>> fetchTasks() async {
     final response = await http.get(Uri.parse('$baseUrl/tasks'));

@@ -100,44 +100,61 @@ class TodoList extends StatelessWidget {
             itemCount: tasks.length,
             itemBuilder: (context, index) {
               final task = tasks[index];
-              return Card(
-                child: ListTile(
-                  title: Selector<TodoProvider, String>(
-                    selector: (context, todoProvider) =>
-                        todoProvider.tasks[index]['title'],
-                    builder: (context, title, child) {
-                      return Text(
-                        title,
-                        style: TextStyle(
-                          decoration: task['completed']
-                              ? TextDecoration.lineThrough
-                              : null,
-                        ),
-                      );
-                    },
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () => showEditTaskDialog(
-                          context,
-                          task['_id'],
-                          task['title'],
-                          task['completed'],
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => context
-                            .read<TodoProvider>()
-                            .deleteTask(task['_id']),
-                      ),
-                    ],
-                  ),
-                ),
-              );
+             return Card(
+ child: ListTile(
+   leading: Selector<TodoProvider, bool>(
+     selector: (context, todoProvider) => 
+         todoProvider.tasks[index]['completed'],
+     builder: (context, completed, child) {
+       return Checkbox(
+         value: completed,
+         onChanged: (bool? value) {
+           context.read<TodoProvider>().editTask(
+                 task['_id'], 
+                 task['title'], 
+                 value ?? false
+               );
+         },
+       );
+     },
+   ),
+   title: Selector<TodoProvider, String>(
+     selector: (context, todoProvider) =>
+         todoProvider.tasks[index]['title'],
+     builder: (context, title, child) {
+       return Text(
+         title,
+         style: TextStyle(
+           decoration: task['completed']
+               ? TextDecoration.lineThrough
+               : null,
+         ),
+       );
+     },
+   ),
+   trailing: Row(
+     mainAxisSize: MainAxisSize.min,
+     children: [
+       IconButton(
+         icon: const Icon(Icons.edit),
+         onPressed: () => showEditTaskDialog(
+           context,
+           task['_id'],
+           task['title'],
+           task['completed'],
+         ),
+       ),
+       IconButton(
+         icon: const Icon(Icons.delete),
+         onPressed: () => context
+             .read<TodoProvider>()
+             .deleteTask(task['_id']),
+       ),
+     ],
+   ),
+ ),
+);
+       
             },
           );
         },
