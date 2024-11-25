@@ -8,7 +8,6 @@ class AddTodo extends StatelessWidget {
 
   const AddTodo({Key? key, this.taskToEdit}) : super(key: key);
 
- 
   void saveTask(BuildContext context, String title, bool isCompleted) {
     if (title.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(

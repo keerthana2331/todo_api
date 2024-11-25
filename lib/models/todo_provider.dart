@@ -67,12 +67,12 @@ class TodoProvider with ChangeNotifier {
     }
     notifyListeners();
   }
- 
+
   void toggleTaskCompletion(String taskId, bool isCompleted) {
     final taskIndex = tasks.indexWhere((task) => task['_id'] == taskId);
     if (taskIndex != -1) {
       tasks[taskIndex]['completed'] = isCompleted;
-      notifyListeners(); 
+      notifyListeners();
     }
   }
 }
